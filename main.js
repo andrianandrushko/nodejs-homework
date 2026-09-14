@@ -15,6 +15,22 @@ const com =  async () => {
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Five-folder'),{recursive:true})
     await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'file.txt'), 'five file')
 
+    const read = await fsPromise.readdir(path.join(__dirname, 'baseFolder', 'First-folder'),{recursive:true})
+    console.log(read)
+
+    const red = await fsPromise.readdir(path.join(__dirname, 'baseFolder', 'Second-folder'),{recursive:true})
+    console.log(red)
+
+    const wer = await fsPromise.readdir(path.join(__dirname, 'baseFolder', 'Third-folder'),{recursive:true})
+    console.log(wer)
+
+    const rty = await fsPromise.readdir(path.join(__dirname, 'baseFolder', 'Fourth-folder', ),{recursive:true})
+    console.log(rty)
+
+    const dfg = await fsPromise.readdir(path.join(__dirname, 'baseFolder', 'Five-folder'),{recursive:true})
+    console.log(dfg)
+
+
     const stat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'First-folder', 'file.txt'));
     console.log(stat.isFile())
     console.log(stat.isDirectory())
