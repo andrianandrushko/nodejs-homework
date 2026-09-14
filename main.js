@@ -31,23 +31,23 @@ const com =  async () => {
     console.log(dfg)
 
 
-    const stat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'First-folder', 'file.txt'));
+    const stat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'First-folder', 'first.txt'));
     console.log(stat.isFile())
     console.log(stat.isDirectory())
 
-    const tat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Second-folder', 'file.txt'));
+    const tat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Second-folder', 'second.txt'));
     console.log(tat.isFile());
     console.log(tat.isDirectory());
 
-    const yui = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Third-folder', 'file.txt'));
+    const yui = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Third-folder', 'third.txt'));
     console.log(yui.isFile());
     console.log(yui.isDirectory());
 
-    const iop = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Fourth-folder', 'file.txt'));
+    const iop = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Fourth-folder', 'fourth.txt'));
     console.log(iop.isFile());
     console.log(iop.isDirectory());
 
-    const pas = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Five-folder', 'file.txt'));
+    const pas = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Five-folder', 'five.txt'));
     console.log(pas.isFile());
     console.log(pas.isDirectory());
 }
