@@ -1,17 +1,38 @@
-const http = require('http');
+const path = require('path');
+const fsPromise = require('fs/promises')
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({
-        data: 'Hello World!',
-        sum:23,
-        num:'Hello coding'
-    }));
-});
+const com =  async () => {
+    const pathToFile = path.join(__dirname,'hello.txt')
+    await fsPromise.writeFile(pathToFile,'hello world')
+    await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'First-folder'),{recursive:true})
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'file.txt'), 'first file')
+    await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Second-folder'),{recursive:true})
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'file.txt'), 'second file')
+    await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Third-folder'),{recursive:true})
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Third-folder', 'file.txt'), 'third file')
+    await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Fourth-folder'),{recursive:true})
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Fourth-folder', 'file.txt'), 'four file')
+    await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Five-folder'),{recursive:true})
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'file.txt'), 'five file')
 
-server.listen(3000);
-setTimeout(() => {
-    server.close(() => {
-        console.log('server on port 3000 closed successfully');
-    });
-}, 10000);
+    const stat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'First-folder', 'file.txt'));
+    console.log(stat.isFile())
+    console.log(stat.isDirectory())
+
+    const tat = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Second-folder', 'file.txt'));
+    console.log(tat.isFile());
+    console.log(tat.isDirectory());
+
+    const yui = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Third-folder', 'file.txt'));
+    console.log(yui.isFile());
+    console.log(yui.isDirectory());
+
+    const iop = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Fourth-folder', 'file.txt'));
+    console.log(iop.isFile());
+    console.log(iop.isDirectory());
+
+    const pas = await fsPromise.stat(path.join(__dirname, 'baseFolder', 'Five-folder', 'file.txt'));
+    console.log(pas.isFile());
+    console.log(pas.isDirectory());
+}
+void com()
