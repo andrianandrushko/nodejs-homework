@@ -41,14 +41,14 @@ const com =  async () => {
 
 
 
-
-
-
-
-
-
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Five-folder'),{recursive:true})
-    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'five.txt'), 'five file')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'first.txt'), '1')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'second.txt'), '2')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'third.txt'), '3')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'fourth.txt'), '4')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Five-folder', 'five.txt'), '5')
+
+
 
     const read = await fsPromise.readdir(path.join(__dirname, 'baseFolder', 'First-folder'),{recursive:true})
     console.log(read)
