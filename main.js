@@ -5,7 +5,17 @@ const com =  async () => {
     const pathToFile = path.join(__dirname,'hello.txt')
     await fsPromise.writeFile(pathToFile,'hello world')
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'First-folder'),{recursive:true})
-    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'first.txt'), 'first file')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'first.txt'), '1')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'second.txt'), '2')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'third.txt'), '3')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'fourth.txt'), '4')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'First-folder', 'five.txt'), '5')
+
+
+
+
+
+
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Second-folder'),{recursive:true})
     await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'second.txt'), 'second file')
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Third-folder'),{recursive:true})
