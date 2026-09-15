@@ -13,11 +13,26 @@ const com =  async () => {
 
 
 
-
-
-
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Second-folder'),{recursive:true})
-    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'second.txt'), 'second file')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'first.txt'), '1')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'second.txt'), '2')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'third.txt'), '3')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'fourth.txt'), '4')
+    await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Second-folder', 'five.txt'), '5')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Third-folder'),{recursive:true})
     await fsPromise.writeFile(path.join(__dirname, 'baseFolder', 'Third-folder', 'third.txt'), 'third file')
     await fsPromise.mkdir(path.join(__dirname, 'baseFolder', 'Fourth-folder'),{recursive:true})
