@@ -56,7 +56,7 @@ const com =  async () => {
 
     const path2 = path.join(__dirname, 'baseFolder', 'First-folder', 'second.txt')
     const stat2 = await fsPromise.stat(path2)
-    console.log(path1,stat2.isFile() ? 'файл' : 'папка')
+    console.log(path2,stat2.isFile() ? 'файл' : 'папка')
 
     const path3 = path.join(__dirname, 'baseFolder', 'First-folder', 'third.txt')
     const stat3 = await fsPromise.stat(path3)
