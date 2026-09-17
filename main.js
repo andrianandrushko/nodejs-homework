@@ -66,7 +66,13 @@ app.put('/users/:id', (req, res) => {
             if (userIndex === -1) {
                 return res.status(404).send({error: 'users not found'})
             }
-            const {name,age} = req.body
+        const {name,age} = req.body
+        if (name.length < 3) {
+            return res.status(400).send({error: 'name - must be at least 3 characters long'})
+        }
+        if (age < 0) {
+            return res.status(400).send({error: 'age – not less than zero'})
+        }
             users[userIndex].name = name
             users[userIndex].age = age
             res.status(200).send(users[userIndex])
