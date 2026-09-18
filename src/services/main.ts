@@ -1,4 +1,5 @@
-const express = require('express')
+import express from "express";
+import { type Request, type Response } from "express";
 
 
 const app = express()
@@ -20,7 +21,7 @@ const users = [
     {id:10,name:'vlad',age: 67},
 ]
 
-app.get('/users', (req, res) => {
+app.get('/users', (req:Request, res:Response, ) => {
     try {
         res.send(users)
 
