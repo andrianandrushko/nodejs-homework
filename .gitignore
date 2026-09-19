@@ -7,4 +7,4 @@ dist/
 .idea/
 *.log
 
-coverage/
+coverage/*.d.ts

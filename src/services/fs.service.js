@@ -1,24 +1,24 @@
 import fs from 'fs/promises';
 import path from 'path';
-import type { IUser } from "../interfaces/user.interface.js";
-
-const read = async (): Promise<IUser[]> => {
+const read = async () => {
     try {
         const pathToFile = path.join(process.cwd(), "db.json");
         const data = await fs.readFile(pathToFile, "utf8");
         return data ? JSON.parse(data) : [];
-    } catch {
+    }
+    catch {
         console.log("error");
         return [];
     }
 };
-
-const write = async (users:IUser[]):Promise<void> => {
+const write = async (users) => {
     try {
         const pathToFile = path.join(process.cwd(), 'db.json');
-        await fs.writeFile(pathToFile, JSON.stringify(users))
-    }catch (e) {
-        console.log(e)
+        await fs.writeFile(pathToFile, JSON.stringify(users));
     }
-}
-export  { read, write }
+    catch (e) {
+        console.log(e);
+    }
+};
+export { read, write };
+//# sourceMappingURL=fs.service.js.map
