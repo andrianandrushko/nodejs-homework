@@ -6,5 +6,4 @@ dist/
 
 .idea/
 *.log
-
 coverage/*.d.ts

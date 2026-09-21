@@ -14,7 +14,7 @@ process.on('uncaughtException', error => {
     console.log('uncaughtException', error.message, error.stack);
     process.exit(1);
 });
-app.listen(5000, () => {
-    console.log('server running on http://localhost:5000');
+app.listen(3002, () => {
+    console.log(`server running on http://localhost:3002`);
 });
 //# sourceMappingURL=main.js.map
