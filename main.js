@@ -2,6 +2,8 @@ import express from "express";
 import {} from "express";
 import { ApiError } from "./src/errors/api.error.js";
 import { userRouter } from "./src/routes/user.router.js";
+import { configs } from "./src/configs/user.config.js";
+import * as mongoose from "mongoose";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -14,7 +16,7 @@ process.on('uncaughtException', error => {
     console.log('uncaughtException', error.message, error.stack);
     process.exit(1);
 });
-app.listen(3002, () => {
-    console.log(`server running on http://localhost:3002`);
+app.listen(5000, () => {
+    console.log('server running on http://localhost:5000');
 });
 //# sourceMappingURL=main.js.map

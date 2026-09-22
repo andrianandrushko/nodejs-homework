@@ -1,24 +1,27 @@
-import fs from 'fs/promises';
-import path from 'path';
-import type { IUser } from "../interfaces/user.interface.js";
+import path = require("node:path");
+import * as fs from "node:fs/promises";
+import type {IUser} from "../interfaces/user.interface.js";
+
 
 const read = async (): Promise<IUser[]> => {
     try {
-        const pathToFile = path.join(process.cwd(), "db.json");
-        const data = await fs.readFile(pathToFile, "utf8");
+        const pathToFile = path.join(__dirname, 'db.json')
+        const data = await fs.readFile(pathToFile, 'utf-8')
         return data ? JSON.parse(data) : [];
-    } catch {
-        console.log("error");
+    } catch(err) {
+        console.log(err);
         return [];
     }
-};
+}
 
-const write = async (users:IUser[]):Promise<void> => {
+const write = async (users: IUser[]) => {
     try {
-        const pathToFile = path.join(process.cwd(), 'db.json');
+        const pathToFile = path.join(__dirname, 'db.json')
         await fs.writeFile(pathToFile, JSON.stringify(users))
-    }catch (e) {
-        console.log(e)
+    }catch (err) {
+        console.log(err);
     }
 }
-export  { read, write }
+
+
+export {read, write};

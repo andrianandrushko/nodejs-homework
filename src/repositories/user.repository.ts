@@ -1,6 +1,7 @@
-import {read, write} from "../services/fs.service.js";
 import type {IUser} from "../interfaces/user.interface.js";
 import {ApiError} from "../errors/api.error.js";
+import {read, write} from "../services/fs.service.js";
+
 
 
 class UserRepository {
@@ -22,12 +23,12 @@ class UserRepository {
 
     public async getById(userId: number): Promise<IUser | undefined> {
         const users = await read();
-        return users.find((user) => user.id === userId)
+        return users.find((user: any) => user.id === userId)
     }
 
     public async putById(putId: number, dto: { name: string, age: number }): Promise<IUser> {
         const users = await read();
-        const user = users.find((user) => user.id === putId)
+        const user = users.find((user: any) => user.id === putId)
         if (!user) {
             throw new ApiError("No such user", 404);
         }
@@ -37,7 +38,7 @@ class UserRepository {
         return user
     }
 
-    public async deleteById(deleteId: any): Promise<IUser | undefined> {
+    public async deleteById(deleteId: number): Promise<IUser | void> {
         const users = await read();
         const userIndex = users.findIndex(user => user.id === deleteId)
         if (userIndex === -1) {
