@@ -1,44 +1,19 @@
-import { read, write } from "../services/fs.service.js";
-import { ApiError } from "../errors/api.error.js";
+import { User } from "../models/user.model.js";
 class UserRepository {
     async getList() {
-        return await read();
+        return await User.find({});
     }
     async create(dto) {
-        const users = await read();
-        const newUser = {
-            id: users.length ? (users[users.length - 1]?.id ?? 0) + 1 : 1,
-            name: dto.name ?? '',
-            age: dto.age ?? 0
-        };
-        users.push(newUser);
-        await write(users);
-        return newUser;
+        return await User.create(dto);
     }
     async getById(userId) {
-        const users = await read();
-        return users.find((user) => user.id === userId);
+        return await User.findById(userId);
     }
     async putById(putId, dto) {
-        const users = await read();
-        const user = users.find((user) => user.id === putId);
-        if (!user) {
-            throw new ApiError("No such user", 404);
-        }
-        user.name = dto.name;
-        user.age = dto.age;
-        await write(users);
-        return user;
+        return await User.findByIdAndUpdate(putId, dto, { new: true });
     }
     async deleteById(deleteId) {
-        const users = await read();
-        const userIndex = users.findIndex(user => user.id === deleteId);
-        if (userIndex === -1) {
-            throw new ApiError('user does not exist', 404);
-        }
-        const [deletedUser] = users.splice(userIndex, 1);
-        await write(users);
-        return deletedUser;
+        return await User.findByIdAndDelete({ _id: deleteId });
     }
 }
 export const userRepository = new UserRepository();

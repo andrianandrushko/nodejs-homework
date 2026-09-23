@@ -2,9 +2,17 @@ import express from "express";
 import { type NextFunction,type Request, type Response } from "express";
 import {ApiError} from "./src/errors/api.error.js";
 import {userRouter} from "./src/routes/user.router.js";
+import {configs} from "./src/configs/user.config.js";
+import * as mongoose from "mongoose";
+import dns from "node:dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express()
 
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.path}`)
+    next()
+})
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
@@ -20,6 +28,7 @@ process.on('uncaughtException', error => {
     process.exit(1);
 })
 
-app.listen(3002, () => {
-    console.log(`server running on http://localhost:3002`);
+app.listen(configs.APP_PORT, configs.APP_HOST, async () => {
+    await mongoose.connect(configs.MONGO_URI)
+    console.log(`server running on http://${configs.APP_HOST}:${configs.APP_PORT}`);
 })

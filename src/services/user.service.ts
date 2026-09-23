@@ -15,14 +15,14 @@ class UserService{
         }
         return await userRepository.create(dto);
     }
-    public async getById(userId: number): Promise<IUser> {
+    public async getById(userId: string): Promise<IUser> {
         const user = await userRepository.getById(userId)
         if (!user){
             throw new ApiError("User not found", 400);
         }
         return user
     }
-    public async putById(putId: number, dto: {name: string, age: number}): Promise<IUser | void> {
+    public async putById(putId: string, dto: {name: string, age: number}): Promise<IUser | null> {
         if (!dto.name || dto.name.length < 3) {
             throw new ApiError("Name must be 3 characters", 400);
         }
@@ -31,7 +31,7 @@ class UserService{
         }
         return  await userRepository.putById(putId, dto);
     }
-    public async deleteById(userId: number): Promise<void> {
+    public async deleteById(userId: string): Promise<void> {
         await userRepository.deleteById(userId);
     }
 }

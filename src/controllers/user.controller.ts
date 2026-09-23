@@ -13,26 +13,26 @@ class UserController {
     }
     public async create(req: Request, res: Response, next: NextFunction){
         try {
-            const dto = await req.body as IUser;
+            const dto = req.body as IUser;
             const result = await userService.create(dto);
             res.json(result);
         }catch (err){
             next(err)
         }
     }
-    public async getById(req: Request, res: Response, next: NextFunction){
+    public async getById(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = Number(req.params.userId);
+            const userId = req.params.userId as string;
             const result = await userService.getById(userId);
             res.json(result);
-        }catch (err){
-            next(err)
+        } catch (err) {
+            next(err);
         }
     }
     public async putById(req: Request, res: Response, next: NextFunction){
         try {
-            const dto = await req.body as IUser;
-            const putId = Number(req.params.userId);
+            const dto = req.body as IUser;
+            const putId = req.params.userId as string;
             const result = await userService.putById(putId,dto)
             res.json(result);
         }catch (err) {
@@ -41,7 +41,7 @@ class UserController {
     }
     public async deleteById(req: Request, res: Response, next: NextFunction) {
         try {
-        const deleteId = Number(req.params.userId);
+        const deleteId = req.params.userId as string;
         const result = await userService.deleteById(deleteId)
         res.json(result);
         }catch (err){
