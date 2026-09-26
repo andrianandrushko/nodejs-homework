@@ -1,11 +1,14 @@
 import type {RoleEnum} from "../enums/role.enum.js";
 
 export interface IUser {
-    id:number;
+    _id: string;
     name: string;
     age: number;
-    phone: string;
+    email: string;
+    password: string;
     role: RoleEnum;
     isVerified: boolean;
-    isDeleted: boolean
+    isDeleted: boolean;
 }
+
+export interface ISignIn extends Pick<IUser, "email" | "password"> {}

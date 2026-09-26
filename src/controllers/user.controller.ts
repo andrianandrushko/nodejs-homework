@@ -1,6 +1,7 @@
 import type {NextFunction, Request, Response} from "express";
 import {userService} from "../services/user.service.js";
 import type {IUser} from "../interfaces/user.interface.js";
+import type {ITokenPayload} from "../interfaces/token.interface.js";
 
 class UserController {
     public async getList(req: Request, res: Response, next: NextFunction) {
@@ -29,20 +30,29 @@ class UserController {
             next(err);
         }
     }
-    public async putById(req: Request, res: Response, next: NextFunction){
+    public async getMe(req: Request, res: Response, next: NextFunction){
         try {
+            const jwtPayload =  res.locals.jwtPayload as ITokenPayload
+            const result = await userService.getMe(jwtPayload)
+            res.json(result);
+        }catch (err) {
+         next(err);
+        }
+    }
+    public async putByMe(req: Request, res: Response, next: NextFunction){
+        try {
+            const jwtPayload =  res.locals.jwtPayload as ITokenPayload
             const dto = req.body as IUser;
-            const putId = req.params.userId as string;
-            const result = await userService.putById(putId,dto)
+            const result = await userService.putByMe(jwtPayload,dto)
             res.json(result);
         }catch (err) {
             next(err)
         }
     }
-    public async deleteById(req: Request, res: Response, next: NextFunction) {
+    public async deleteByMe(req: Request, res: Response, next: NextFunction) {
         try {
-        const deleteId = req.params.userId as string;
-        const result = await userService.deleteById(deleteId)
+        const jwtPayload =  res.locals.jwtPayload as ITokenPayload
+        const result = await userService.deleteByMe(jwtPayload)
         res.json(result);
         }catch (err){
             next(err)

@@ -1,0 +1,50 @@
+import {userRepository} from "../repositories/user.repository.js";
+import type {ISignIn, IUser} from "../interfaces/user.interface.js";
+import {passwordService} from "./password.service.js";
+import {tokenService} from "./token.service.js";
+import {tokenRepository} from "../repositories/token.repository.js";
+import type {ITokenPair, ITokenPayload} from "../interfaces/token.interface.js";
+import {ApiError} from "../errors/api.error.js";
+
+class AuthService{
+    public async sighUp(dto: Partial<IUser>): Promise<{user:IUser, tokens: ITokenPair}> {
+        if (!dto.password) {
+            throw new ApiError('password failed', 401)
+        }
+        const password = await passwordService.hashPassword(dto.password)
+        const user = await userRepository.create({...dto, password})
+        const tokens = tokenService.generateTokens({userId: user._id, role: user.role})
+        await tokenRepository.create({...tokens, _userId: user._id })
+        return {user, tokens}
+    }
+    public async sighIn(dto: ISignIn): Promise<{user:IUser, tokens: ITokenPair}> {
+        const user = await userRepository.getByEmail(dto.email)
+        if (!user) {
+            throw new ApiError('user not found', 404)
+        }
+
+        const isPasswordCorrect = await passwordService.comparePassword(dto.password, user.password)
+        if (!isPasswordCorrect) {
+            throw new ApiError('password not correct', 401)
+        }
+        const tokens = tokenService.generateTokens({userId: user._id, role: user.role})
+        await tokenRepository.create({...tokens, _userId: user._id })
+        return {user, tokens}
+    }
+    public async refresh(jwtPayload: ITokenPayload): Promise<ITokenPair> {
+        const tokens = tokenService.generateTokens({userId: jwtPayload.userId, role: jwtPayload.role})
+        await tokenRepository.create({...tokens, _userId: jwtPayload.userId})
+        return tokens;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+export const authService = new AuthService();

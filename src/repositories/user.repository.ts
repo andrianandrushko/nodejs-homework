@@ -22,6 +22,9 @@
         public async deleteById(deleteId: string): Promise<IUser | null> {
             return await User.findByIdAndDelete({_id: deleteId})
         }
+        public async getByEmail(email: string): Promise<IUser | null> {
+            return await User.findOne({ email })
+        }
     }
 
 

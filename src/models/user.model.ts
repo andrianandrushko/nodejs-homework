@@ -5,12 +5,13 @@ import {RoleEnum} from "../enums/role.enum.js";
 
 const userSchema = new Schema(
     {
-        name: {type: String, required: true},
-        age: {type: Number, required: true},
-        phone: {type: String, required: false},
-        role: {type: String, enum: RoleEnum, default: RoleEnum.USER},
-        isVerified: {type: Boolean, default: false},
-        isDeleted: {type: Boolean, default: false},
+        name: { type: String, required: true },
+        age: { type: Number, required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        role: { type: String, enum: RoleEnum, default: RoleEnum.USER },
+        isVerified: { type: Boolean, default: false },
+        isDeleted: { type: Boolean, default: false },
     },
     {
         timestamps: true,

@@ -5,6 +5,7 @@ import {userRouter} from "./src/routes/user.router.js";
 import {configs} from "./src/configs/user.config.js";
 import * as mongoose from "mongoose";
 import dns from "node:dns";
+import {authRouter} from "./src/routes/auth.router.js";
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express()
@@ -15,7 +16,7 @@ app.use((req, res, next) => {
 })
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-
+app.use('/auth', authRouter)
 app.use('/users', userRouter)
 
 app.use((error: ApiError, req: Request, res: Response, next: NextFunction) => {

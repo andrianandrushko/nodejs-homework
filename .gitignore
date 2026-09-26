@@ -7,3 +7,5 @@ dist/
 .idea/
 *.log
 coverage/*.d.ts
+src/**/*.js
+src/**/*.d.ts
