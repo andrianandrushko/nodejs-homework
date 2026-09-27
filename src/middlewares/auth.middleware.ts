@@ -38,14 +38,14 @@ class AuthMiddleware{
             }
             const refreshToken = header.split("Bearer ")[1];
             if (!refreshToken) {
-                throw new ApiError("Authorization header is required", 401);
+                throw new ApiError("refresh token is required", 401);
             }
 
             const payload = tokenService.verifyToken(refreshToken, TokenType.REFRESH);
 
             const pair = await tokenRepository.findByParams({refreshToken});
             if (!pair) {
-                throw new ApiError("Authorization header is required", 401);
+                throw new ApiError("refresh token fot found in bd", 401);
             }
             res.locals.jwtPayload = payload;
             next()
