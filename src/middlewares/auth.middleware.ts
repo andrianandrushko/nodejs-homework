@@ -3,6 +3,7 @@ import {ApiError} from "../errors/api.error.js";
 import {tokenRepository} from "../repositories/token.repository.js";
 import {tokenService} from "../services/token.service.js";
 import {TokenType} from "../enums/token-type.enum.js";
+import {Token} from "../models/token.model.js";
 
 
 
@@ -42,7 +43,6 @@ class AuthMiddleware{
             }
 
             const payload = tokenService.verifyToken(refreshToken, TokenType.REFRESH);
-
             const pair = await tokenRepository.deleteByRefreshToken({refreshToken});
             if (!pair) {
                 throw new ApiError("refresh token fot found in bd", 401);
