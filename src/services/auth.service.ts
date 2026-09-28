@@ -5,6 +5,7 @@ import {tokenService} from "./token.service.js";
 import {tokenRepository} from "../repositories/token.repository.js";
 import type {ITokenPair, ITokenPayload} from "../interfaces/token.interface.js";
 import {ApiError} from "../errors/api.error.js";
+import {TokenType} from "../enums/token-type.enum.js";
 
 class AuthService{
     public async sighUp(dto: Partial<IUser>): Promise<{user:IUser, tokens: ITokenPair}> {

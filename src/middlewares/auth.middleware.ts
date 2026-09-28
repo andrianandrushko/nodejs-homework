@@ -43,7 +43,7 @@ class AuthMiddleware{
 
             const payload = tokenService.verifyToken(refreshToken, TokenType.REFRESH);
 
-            const pair = await tokenRepository.findByParams({refreshToken});
+            const pair = await tokenRepository.deleteByRefreshToken({refreshToken});
             if (!pair) {
                 throw new ApiError("refresh token fot found in bd", 401);
             }

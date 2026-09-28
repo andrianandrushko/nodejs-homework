@@ -9,6 +9,9 @@ class TokenRepository {
     public async findByParams(params: Partial<IToken>): Promise<IToken | null> {
         return await Token.findOne(params)
     }
+    public async deleteByRefreshToken({ refreshToken }: { refreshToken: string }): Promise<IToken | null> {
+        return await Token.findOneAndDelete({ refreshToken });
+    }
 }
 
 export const tokenRepository = new TokenRepository();
