@@ -12,6 +12,9 @@ class AuthService{
         if (!dto.password) {
             throw new ApiError('password failed', 401)
         }
+        if (!dto.email){
+            throw new ApiError('email failed', 401)
+        }
         const password = await passwordService.hashPassword(dto.password)
         const user = await userRepository.create({...dto, password})
         const tokens = tokenService.generateTokens({userId: user._id, role: user.role})

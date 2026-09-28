@@ -8,10 +8,10 @@ import { TokenType } from "../enums/token-type.enum.js";
 class TokenService {
     public generateTokens(payload: ITokenPayload): ITokenPair {
         const accessToken = jsonwebtoken.sign(payload, configs.JWT_ACCESS_TOKEN , {
-            expiresIn: "10m"
+            expiresIn: Number(configs.JWT_ACCESS_EXPIRATION)
         })
         const refreshToken = jsonwebtoken.sign(payload, configs.JWT_REFRESH_TOKEN , {
-            expiresIn: "30d"
+            expiresIn: Number(configs.JWT_REFRESH_EXPIRATION)
         })
         return {accessToken, refreshToken}
     }
