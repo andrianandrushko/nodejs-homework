@@ -6,6 +6,8 @@ import {tokenRepository} from "../repositories/token.repository.js";
 import type {ITokenPair, ITokenPayload} from "../interfaces/token.interface.js";
 import {ApiError} from "../errors/api.error.js";
 import {TokenType} from "../enums/token-type.enum.js";
+import {emailService} from "./email.service.js";
+import {EmailTypeEnum} from "../enums/email-type.enum.js";
 
 class AuthService{
     public async sighUp(dto: Partial<IUser>): Promise<{user:IUser, tokens: ITokenPair}> {
@@ -19,6 +21,7 @@ class AuthService{
         const user = await userRepository.create({...dto, password})
         const tokens = tokenService.generateTokens({userId: user._id, role: user.role})
         await tokenRepository.create({...tokens, _userId: user._id })
+        await emailService.sendEmail(EmailTypeEnum.WELCOME,'andrushkoandrian@gmail.com', {name: user.name})
         return {user, tokens}
     }
     public async sighIn(dto: ISignIn): Promise<{user:IUser, tokens: ITokenPair}> {
