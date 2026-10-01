@@ -9,4 +9,6 @@ const router = Router();
 router.post("/sign-up",authController.signUp);
 router.post("/sign-in",authController.signIn);
 router.post("/refresh", authMiddleware.checkRefreshToken, authController.refresh)
+router.post("/logout",authMiddleware.checkAccessToken,authController.logout)
+router.post("/logout-all",authMiddleware.checkAccessToken,authController.logoutByAll)
 export const authRouter = router;

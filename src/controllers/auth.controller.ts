@@ -31,6 +31,24 @@ class AuthController {
             next(err)
         }
     }
+    public async logout(req: Request, res: Response, next: NextFunction) {
+        try {
+            const accessToken =  res.locals.accessToken;
+            const result = await authService.logout(accessToken)
+            res.json(result);
+        }catch (err){
+            next(err)
+        }
+    }
+    public async logoutByAll(req: Request, res: Response, next: NextFunction) {
+        try {
+            const userId = res.locals.jwtPayload.userId;
+            const result = await authService.logoutAll(userId)
+            res.json(result);
+        }catch (err){
+            next(err)
+        }
+    }
 }
 
 export const authController = new AuthController()

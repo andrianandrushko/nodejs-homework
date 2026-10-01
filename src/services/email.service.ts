@@ -33,8 +33,7 @@ class EmailService{
         const { subject, template } = EmailConstants[type]
         const option =  {
           to,
-          subject: 'test email',
-          html: 'this is a test email',
+          subject,
           template,
           context
         }

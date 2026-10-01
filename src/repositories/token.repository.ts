@@ -1,5 +1,6 @@
 import {Token} from "../models/token.model.js";
 import type {IToken} from "../interfaces/token.interface.js";
+import type {DeleteResult} from "mongoose";
 
 
 class TokenRepository {
@@ -11,6 +12,12 @@ class TokenRepository {
     }
     public async deleteByRefreshToken({ refreshToken }: { refreshToken: string }): Promise<IToken | null> {
         return await Token.findOneAndDelete({ refreshToken });
+    }
+    public async deleteByOne({accessToken}: { accessToken: string }): Promise<DeleteResult> {
+        return await Token.deleteOne({accessToken})
+    }
+    public async deleteByAll(_userId: string ): Promise<DeleteResult> {
+        return await Token.deleteMany({_userId})
     }
 }
 
