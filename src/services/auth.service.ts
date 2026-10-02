@@ -22,7 +22,11 @@ class AuthService {
         const user = await userRepository.create({...dto, password})
         const tokens = tokenService.generateTokens({userId: user._id, role: user.role})
         await tokenRepository.create({...tokens, _userId: user._id})
-        await emailService.sendEmail(EmailTypeEnum.WELCOME, user.email, {name: user.name})
+        try {
+            await emailService.sendEmail(EmailTypeEnum.WELCOME, user.email, {name: user.name})
+        } catch (error) {
+            console.error('Failed to send welcome email:', error);
+        }
         return {user, tokens}
     }
 

@@ -5,6 +5,8 @@ import {configs} from "../configs/user.config.js";
 import type {EmailTypeEnum} from "../enums/email-type.enum.js";
 import {EmailConstants} from "../constants/email.constants.js";
 import type {EmailTypeToPayloadType} from "../types/email.type-to-payload.type.js";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class EmailService{
     private transporter: Transporter;
@@ -16,14 +18,14 @@ class EmailService{
                 pass: configs.SMTP_PASSWORD,
             }
         })
-
+        const templatePath = path.join(__dirname, '', 'templates');
         const hbsOptions = {
             viewEngine: {
                 extname: ".hbs",
-                partialsDir: path.join(process.cwd(), 'src', 'templates', "./partials"),
-                layoutsDir: path.join(process.cwd(), 'src', 'templates', "./layouts"),
+                partialsDir: path.join(templatePath, "./partials"),
+                layoutsDir: path.join(templatePath, "./layouts"),
             },
-            viewPath: path.join(process.cwd(), 'src', 'templates', "./views"),
+            viewPath: path.join(templatePath, "./views"),
             extName: '.hbs'
         };
         this.transporter.use('compile', hbs(hbsOptions))
