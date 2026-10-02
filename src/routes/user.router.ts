@@ -8,15 +8,15 @@
 
     const router = Router();
 
-    router.get("/", userValidateMiddleware.validateQuery(),userController.getList);
+    router.get("/", userValidateMiddleware.validateQuery(), userController.getList);
 
-    router.get("/me", userMiddleware.isItValid('userId'),userValidateMiddleware.validateParams(),authMiddleware.checkAccessToken,userController.getMe)
+    router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
 
-    router.put("/me", userMiddleware.isItValid('userId'),userValidateMiddleware.validateBody(),userValidateMiddleware.validateParams(),authMiddleware.checkAccessToken,userController.putByMe)
+    router.put("/me", authMiddleware.checkAccessToken, userValidateMiddleware.validateBody(), userController.putByMe);
 
-    router.delete("/me", userMiddleware.isItValid('userId'),userValidateMiddleware.validateParams(),authMiddleware.checkAccessToken,userController.deleteByMe)
+    router.delete("/me", authMiddleware.checkAccessToken, userController.deleteByMe);
 
-    router.get("/:userId", userMiddleware.isItValid('userId'),userValidateMiddleware.validateParams(),userController.getById)
+    router.get("/:userId", userValidateMiddleware.validateParams(), userMiddleware.isItValid("userId"), userController.getById);
 
 
 export const userRouter = router;
