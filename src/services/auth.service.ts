@@ -22,7 +22,7 @@ class AuthService {
         const user = await userRepository.create({...dto, password})
         const tokens = tokenService.generateTokens({userId: user._id, role: user.role})
         await tokenRepository.create({...tokens, _userId: user._id})
-        await emailService.sendEmail(EmailTypeEnum.WELCOME, 'andrushkoandrian@gmail.com', {name: user.name})
+        await emailService.sendEmail(EmailTypeEnum.WELCOME, user.email, {name: user.name})
         return {user, tokens}
     }
 
@@ -56,8 +56,12 @@ class AuthService {
         if (!user) {
             throw new ApiError('user not found', 404);
         }
-        await emailService.sendEmail(EmailTypeEnum.LOGOUT_ALL, 'andrushkoandrian@gmail.com', { name: user.name });
         await tokenRepository.deleteByAll(userId);
+        try {
+            await emailService.sendEmail(EmailTypeEnum.LOGOUT_ALL, user.email, { name: user.name });
+        } catch (error) {
+            console.error('Failed to send logout email:', error);
+        }
     }
 }
 
