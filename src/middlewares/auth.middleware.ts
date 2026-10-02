@@ -26,6 +26,7 @@ class AuthMiddleware{
                 throw new ApiError("Authorization header is required", 401);
             }
             res.locals.jwtPayload = payload;
+            res.locals.accessToken = accessToken;
             next()
         }catch(err){
             next(err)

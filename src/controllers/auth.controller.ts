@@ -34,8 +34,8 @@ class AuthController {
     public async logout(req: Request, res: Response, next: NextFunction) {
         try {
             const accessToken =  res.locals.accessToken;
-            const result = await authService.logout(accessToken)
-            res.json(result);
+            await authService.logout(accessToken)
+            res.sendStatus(204);
         }catch (err){
             next(err)
         }
@@ -43,8 +43,8 @@ class AuthController {
     public async logoutByAll(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = res.locals.jwtPayload.userId;
-            const result = await authService.logoutAll(userId)
-            res.json(result);
+            await authService.logoutAll(userId)
+            res.sendStatus(204);
         }catch (err){
             next(err)
         }
