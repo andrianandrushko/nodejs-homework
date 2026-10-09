@@ -4,7 +4,8 @@ import type {EmailPayloadCombinedType} from "./email-payload-combined.type.js";
 
 export type EmailTypeToPayloadType = {
     [EmailTypeEnum.WELCOME]: PickRequiredType<EmailPayloadCombinedType, "name">
-    [EmailTypeEnum.FORGOT_PASSWORD]: PickRequiredType<EmailPayloadCombinedType, "name" | "email">
+    [EmailTypeEnum.FORGOT_PASSWORD]: PickRequiredType<EmailPayloadCombinedType, "name" | "email" | "actionToken">
     [EmailTypeEnum.OLD_VISIT]: PickRequiredType<EmailPayloadCombinedType, "name" | "email">
     [EmailTypeEnum.LOGOUT_ALL]: PickRequiredType<EmailPayloadCombinedType, "name">
+    [EmailTypeEnum.VERIFY_EMAIL]: PickRequiredType<EmailPayloadCombinedType, 'email' | 'isVerified' | 'verifyToken'>
 }

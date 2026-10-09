@@ -12,3 +12,11 @@ export interface IUser {
 }
 
 export interface ISignIn extends Pick<IUser, "email" | "password"> {}
+
+export type IResetPasswordSend = Pick<IUser, 'email'>
+
+export type IResetPasswordSet = Pick<IUser, 'password'> & {token: string}
+
+export type IVerifyEmail = Pick<IUser, 'email'> & {token: string}
+
+export type IVerifyToken = Pick<IUser, 'email' |'isVerified'> & {token: string}

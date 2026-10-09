@@ -11,4 +11,9 @@ router.post("/sign-in",authController.signIn);
 router.post("/refresh", authMiddleware.checkRefreshToken, authController.refresh)
 router.post("/logout",authMiddleware.checkAccessToken,authController.logout)
 router.post("/logout-all",authMiddleware.checkAccessToken,authController.logoutByAll)
+router.post("/forgot-password",authController.forgotPasswordSendEmail)
+router.put("/forgot-password",authMiddleware.checkActionToken,authController.forgotPasswordSet)
+router.post("/verify-email",authController.SendVerifyEmail)
+router.post("/verify-token",authMiddleware.checkVerifyToken,authController.SendVerifyToken)
+
 export const authRouter = router;

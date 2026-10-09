@@ -4,6 +4,9 @@ import {tokenRepository} from "../repositories/token.repository.js";
 import {tokenService} from "../services/token.service.js";
 import {TokenType} from "../enums/token-type.enum.js";
 import {Token} from "../models/token.model.js";
+import type {IResetPasswordSet, IVerifyEmail, IVerifyToken} from "../interfaces/user.interface.js";
+import {ActionTokenTypeEnum} from "../enums/action-token-type.enum.js";
+import {actionTokenRepository} from "../repositories/action-token.repository.js";
 
 
 
@@ -54,7 +57,37 @@ class AuthMiddleware{
             next(err)
         }
     }
+    public async checkActionToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { token } = req.body as IResetPasswordSet;
+            const payload =  await tokenService.verifyActionToken(token, ActionTokenTypeEnum.FORGOT_PASSWORD)
 
+            const pair = await actionTokenRepository.getByToken(token)
+            if (!pair) {
+                throw new ApiError("action token not found", 401);
+            }
+            res.locals.jwtPayload = payload;
+            next()
+        }catch(err){
+            next(err)
+        }
+    }
+    public async checkVerifyToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            const { token } = req.body as IVerifyToken;
+            const { isVerified } = req.body as IVerifyToken;
+            const payload = await tokenService.verifySendEmail(token, ActionTokenTypeEnum.VERIFY_EMAIL)
+
+            const pair = await actionTokenRepository.getByVerifyToken(token,isVerified)
+            if (!pair) {
+                throw new ApiError("action token not found", 401);
+            }
+            res.locals.jwtPayload = payload;
+            next()
+        }catch(err){
+            next(err)
+        }
+    }
 }
 
 export const authMiddleware = new AuthMiddleware()

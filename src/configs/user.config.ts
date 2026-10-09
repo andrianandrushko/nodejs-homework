@@ -13,4 +13,8 @@ export const configs = {
     JWT_REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN || '',
     SMTP_EMAIL: process.env.SMTP_EMAIL || '',
     SMTP_PASSWORD: process.env.SMTP_PASSWORD || '',
+    ACTION_FORGOT_PASSWORD: process.env.ACTION_FORGOT_PASSWORD || '',
+    ACTION_FORGOT_PASSWORD_EXPIRATION:  process.env.ACTION_FORGOT_PASSWORD_EXPIRATION || '',
+    SEND_VERIFY_EMAIL: process.env.SEND_VERIFY_EMAIL || '',
+    SEND_VERIFY_EMAIL_EXPIRATION: process.env.SEND_VERIFY_EMAIL_EXPIRATION || '',
 }
