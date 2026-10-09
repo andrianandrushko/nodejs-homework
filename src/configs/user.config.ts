@@ -13,4 +13,9 @@ export const configs = {
     JWT_REFRESH_TOKEN: process.env.JWT_REFRESH_TOKEN || '',
     SMTP_EMAIL: process.env.SMTP_EMAIL || '',
     SMTP_PASSWORD: process.env.SMTP_PASSWORD || '',
+    SENDGRID_API_KEY: process.env.SENDGRID_API_KEY || '',
+    SENDGRID_FROM_EMAIL: process.env.SENDGRID_FROM_EMAIL || '',
+    FRONTEND_URL: process.env.FRONTEND_URL || '',
+    ACTION_FORGOT_PASSWORD: process.env.ACTION_FORGOT_PASSWORD || '',
+    ACTION_FORGOT_PASSWORD_EXPIRATION: process.env.ACTION_FORGOT_PASSWORD_EXPIRATION || '',
 }

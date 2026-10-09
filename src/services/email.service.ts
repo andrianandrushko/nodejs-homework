@@ -18,7 +18,7 @@ class EmailService{
                 pass: configs.SMTP_PASSWORD,
             }
         })
-        const templatePath = path.join(__dirname, '', 'templates');
+        const templatePath = path.join(__dirname, '..', 'templates')
         const hbsOptions = {
             viewEngine: {
                 extname: ".hbs",

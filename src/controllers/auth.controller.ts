@@ -1,5 +1,5 @@
 import type {NextFunction, Request, Response} from "express";
-import type {ISignIn, IUser} from "../interfaces/user.interface.js";
+import type {IResetPasswordSend, IResetPasswordSet, ISignIn, IUser} from "../interfaces/user.interface.js";
 import {authService} from "../services/auth.service.js";
 import type {ITokenPayload} from "../interfaces/token.interface.js";
 
@@ -49,6 +49,25 @@ class AuthController {
             next(err)
         }
     }
+    public async forgotPasswordSendEmail(req: Request, res: Response, next: NextFunction) {
+        try {
+            const dto = req.body as IResetPasswordSend;
+            await authService.forgotPasswordSendEmail(dto)
+            res.sendStatus(204);
+        }catch (err) {
+            next(err)
+        }
+    }
+    public async forgotPasswordSet(req: Request, res: Response, next: NextFunction) {
+            try {
+                const jwtPayload =  res.locals.jwtPayload as ITokenPayload
+                const dto = req.body as IResetPasswordSet;
+                await authService.forgotPasswordSet(dto, jwtPayload)
+                res.sendStatus(204);
+            }catch (err) {
+                next(err)
+            }
+        }
 }
 
 export const authController = new AuthController()

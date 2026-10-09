@@ -15,7 +15,7 @@
             return await User.findById(userId)
         }
 
-        public async putById(putId: string, dto: { name: string, age: number }): Promise<IUser | null> {
+        public async putById(putId: string, dto: Partial<IUser>): Promise<IUser | null> {
           return await User.findByIdAndUpdate(putId,dto, {new: true})
         }
 
