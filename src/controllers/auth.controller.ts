@@ -85,8 +85,9 @@ class AuthController {
     }
     public async SendVerifyToken(req: Request, res: Response, next: NextFunction) {
         try {
-            const dto = req.body as IVerifyToken;
-            await authService.SendVerifyToken(dto)
+            const { jwtPayload } = res.locals.jwtPayload;
+            const { token } = req.body as IVerifyToken;
+            await authService.SendVerifyToken(jwtPayload,token)
             res.sendStatus(204);
         }catch (err) {
             next(err)

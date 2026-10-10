@@ -79,7 +79,6 @@ class AuthService {
             throw new ApiError('user not found', 404);
         }
         const token = tokenService.generateActionTokens({role: user.role,userId: user._id},ActionTokenTypeEnum.FORGOT_PASSWORD)
-        console.log(token)
         await actionTokenRepository.create({token,type: ActionTokenTypeEnum.FORGOT_PASSWORD,_userId: user._id})
         await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, user.email,{name: user.name, email: user.email, actionToken: token})
     }
@@ -94,12 +93,13 @@ class AuthService {
             throw new ApiError('user not found', 404)
         }
         const token = await tokenService.generateVerifyEmail({ role: user.role, userId: user._id }, ActionTokenTypeEnum.VERIFY_EMAIL)
+        console.log(token)
         await actionTokenRepository.create({ token, type: ActionTokenTypeEnum.VERIFY_EMAIL, isVerified: user.isVerified })
         await emailService.sendEmail(EmailTypeEnum.VERIFY_EMAIL, user.email, {email: user.email, isVerified: user.isVerified, verifyToken: token})
     }
-    public async SendVerifyToken(dto: IVerifyToken): Promise<void> {
-        await userRepository.getByEmail(dto.email)
-        await actionTokenRepository.getByVerifyToken(dto.token, dto.isVerified)
+    public async SendVerifyToken(userId: string, token: string): Promise<void> {
+        await userRepository.putById(userId, {isVerified: true})
+        await actionTokenRepository.deleteManyBaParams({type: ActionTokenTypeEnum.VERIFY_EMAIL, token})
     }
 }
 

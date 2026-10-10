@@ -75,10 +75,9 @@ class AuthMiddleware{
     public async checkVerifyToken(req: Request, res: Response, next: NextFunction) {
         try {
             const { token } = req.body as IVerifyToken;
-            const { isVerified } = req.body as IVerifyToken;
             const payload = await tokenService.verifySendEmail(token, ActionTokenTypeEnum.VERIFY_EMAIL)
 
-            const pair = await actionTokenRepository.getByVerifyToken(token,isVerified)
+            const pair = await actionTokenRepository.getByToken(token)
             if (!pair) {
                 throw new ApiError("action token not found", 401);
             }
