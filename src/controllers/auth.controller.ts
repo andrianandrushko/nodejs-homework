@@ -108,8 +108,10 @@ class AuthController {
     public async checkPasswordOldPassword(req: Request, res: Response, next: NextFunction) {
         try {
             const jwtPayload = res.locals.jwtPayload as ITokenPayload;
-            const dto = req.body as IOldPassword
-            await authService.checkPasswordOldPassword(dto, jwtPayload)
+            const { _userId } = req.body as IOldPassword
+            const { currentHash } = req.body as IOldPassword
+            const { newPassword } = req.body as IOldPassword
+            await authService.checkPasswordOldPassword(_userId,currentHash,newPassword, jwtPayload)
         }catch (err){
             next(err)
         }
