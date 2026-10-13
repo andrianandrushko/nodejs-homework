@@ -1,12 +1,13 @@
 import {CronJob} from "cron";
 import {timeHelper} from "../helpers/time.helper.js";
-import {tokenRepository} from "../repositories/token.repository.js";
+
+import {oldPasswordRepository} from "../repositories/old-password.repository.js";
 
 
 const handler = async () => {
     try {
         const date = timeHelper.subtractByParams(180,'days')
-        const deleteCount = await tokenRepository.deleteBeforeDate(date)
+        const deleteCount = await oldPasswordRepository.deleteBeforeDate(date)
         console.log(`Deleted ${deleteCount} old tokens`)
     }catch (err) {
         console.log(err)
