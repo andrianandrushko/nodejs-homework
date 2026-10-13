@@ -1,5 +1,6 @@
 import type {NextFunction, Request, Response} from "express";
 import type {
+    IChangePassword,
     IResetPasswordSend,
     IResetPasswordSet,
     ISignIn,
@@ -8,6 +9,7 @@ import type {
 } from "../interfaces/user.interface.js";
 import {authService} from "../services/auth.service.js";
 import type {ITokenPayload} from "../interfaces/token.interface.js";
+import type {IOldPassword} from "../interfaces/old-password.interface.js";
 
 class AuthController {
     public async signUp(req: Request, res: Response, next: NextFunction) {
@@ -90,6 +92,25 @@ class AuthController {
             await authService.SendVerifyToken(jwtPayload,token)
             res.sendStatus(204);
         }catch (err) {
+            next(err)
+        }
+    }
+    public async changePassword(req: Request, res: Response, next: NextFunction) {
+        try {
+            const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+            const dto = req.body as IChangePassword;
+            await authService.changePassword(jwtPayload,dto)
+            res.sendStatus(204);
+        }catch (err){
+            next(err)
+        }
+    }
+    public async checkPasswordOldPassword(req: Request, res: Response, next: NextFunction) {
+        try {
+            const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+            const dto = req.body as IOldPassword
+            await authService.checkPasswordOldPassword(dto, jwtPayload)
+        }catch (err){
             next(err)
         }
     }

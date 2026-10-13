@@ -20,3 +20,5 @@ export type IResetPasswordSet = Pick<IUser, 'password'> & {token: string}
 export type IVerifyEmail = Pick<IUser, 'email'>;
 
 export type IVerifyToken = { token: string };
+
+export type IChangePassword = Pick<IUser, 'password'> & {oldPassword: string};

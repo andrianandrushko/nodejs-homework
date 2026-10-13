@@ -12,7 +12,7 @@
         }
 
         public async getById(userId: string): Promise<IUser | null> {
-            return await User.findById(userId)
+            return await User.findById(userId).select('+password')
         }
 
         public async putById(putId: string, dto: Partial<IUser>): Promise<IUser | null> {

@@ -1,5 +1,6 @@
 import {userRepository} from "../repositories/user.repository.js";
 import type {
+    IChangePassword,
     IResetPasswordSend,
     IResetPasswordSet,
     ISignIn,
@@ -15,6 +16,9 @@ import {emailService} from "./email.service.js";
 import {EmailTypeEnum} from "../enums/email-type.enum.js";
 import {ActionTokenTypeEnum} from "../enums/action-token-type.enum.js";
 import {actionTokenRepository} from "../repositories/action-token.repository.js";
+import {oldPasswordRepository} from "../repositories/old-password.repository.js";
+import type {IOldPassword} from "../interfaces/old-password.interface.js";
+import {authController} from "../controllers/auth.controller.js";
 
 class AuthService {
     public async sighUp(dto: Partial<IUser>): Promise<{ user: IUser, tokens: ITokenPair }> {
@@ -100,6 +104,38 @@ class AuthService {
     public async SendVerifyToken(userId: string, token: string): Promise<void> {
         await userRepository.putById(userId, {isVerified: true})
         await actionTokenRepository.deleteManyBaParams({type: ActionTokenTypeEnum.VERIFY_EMAIL, token})
+    }
+    public async changePassword(jwtPayload: ITokenPayload,dto: IChangePassword): Promise<void> {
+        const user = await userRepository.getById(jwtPayload.userId)
+        if (!user){
+            throw new ApiError('user not found', 401)
+        }
+        const isPasswordCorrect = await passwordService.comparePassword(
+            dto.oldPassword,
+            user.password
+        );
+        if (!isPasswordCorrect) {
+            throw new ApiError('password not correct', 401)
+        }
+        await this.checkPasswordOldPassword(jwtPayload.userId,user.password, dto.password, jwtPayload)
+        await oldPasswordRepository.create(jwtPayload.userId, user.password)
+        const password = await passwordService.hashPassword(dto.password)
+        await userRepository.putById(jwtPayload.userId, {password})
+        await tokenRepository.deleteManyParams({_userId: jwtPayload.userId})
+
+    }
+    public async checkPasswordOldPassword(_userId: string, currentHash: string, newPassword: string,jwtPayload: ITokenPayload):Promise<void> {
+        const user = await passwordService.comparePassword(newPassword,currentHash)
+        if (user) {
+            throw new ApiError('user not found', 401)
+        }
+        const oldPassword = await oldPasswordRepository.getAllByUserId(_userId)
+        for (const old of oldPassword) {
+            if (await passwordService.comparePassword(newPassword,old.password)){
+                throw new ApiError('password was used in the last 180 days', 409)
+            }
+        }
+        await tokenRepository.deleteManyParams({_userId: jwtPayload.userId})
     }
 }
 
