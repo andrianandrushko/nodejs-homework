@@ -15,6 +15,6 @@ router.post("/forgot-password",authController.forgotPasswordSendEmail)
 router.put("/forgot-password",authMiddleware.checkActionToken,authController.forgotPasswordSet)
 router.post("/verify-email",authController.SendVerifyEmail)
 router.post("/verify-token",authMiddleware.checkVerifyToken,authController.SendVerifyToken)
-router.post("/change-password",authMiddleware.checkAccessToken, authController.changePassword)
+router.post("/change-password",authMiddleware.checkAccessToken,authController.checkPasswordOldPassword, authController.changePassword)
 
 export const authRouter = router;
