@@ -65,8 +65,7 @@ class UserService{
         if (!user){
             throw new ApiError("User not found", 400);
         }
-        const avatar = await s3Service.deleteFile(user.avatar)
-        console.log(avatar)
+        await s3Service.deleteFile(user.avatar)
         const update = await userRepository.putById(jwtPayload.userId, {avatar: ''})
         return update
     }
