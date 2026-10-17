@@ -60,6 +60,15 @@ class UserService{
         const update = await userRepository.putById(jwtPayload.userId, {avatar})
         return update
     }
+    public async deleteFile(jwtPayload: ITokenPayload):Promise<IUser | null> {
+        const user = await userRepository.getById(jwtPayload.userId);
+        if (!user){
+            throw new ApiError("User not found", 400);
+        }
+        const avatar = await s3Service.deleteFile(user.avatar)
+        const update = await userRepository.putById(jwtPayload.userId, {avatar: ''})
+        return update
+    }
 }
 
 

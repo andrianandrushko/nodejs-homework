@@ -77,6 +77,17 @@ class UserController {
             next(err)
         }
     }
+    public async deleteFile(req: Request, res: Response, next: NextFunction) {
+        try {
+            const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+            const user = await userService.deleteFile(jwtPayload)
+            if (!user) {
+                throw new ApiError('user not found',404)
+            }
+        }catch (err){
+            next(err)
+        }
+    }
 }
 
 export const userController = new UserController()

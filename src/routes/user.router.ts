@@ -21,5 +21,7 @@
 
     router.post("/me",authMiddleware.checkAccessToken,fileMiddleware.isFileValid(), userController.uploadAvatar)
 
+    router.delete("me", authMiddleware.checkAccessToken, fileMiddleware.FileValidation(), userController.deleteFile);
+
 
 export const userRouter = router;

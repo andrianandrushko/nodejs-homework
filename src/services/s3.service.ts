@@ -1,7 +1,7 @@
 import {configs} from "../configs/user.config.js";
 import type {UploadedFile} from "express-fileupload";
 import type {FileItemTypeEnum} from "../enums/file.item-type.enum.js";
-import {PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
+import {DeleteObjectCommand, PutObjectCommand, S3Client} from "@aws-sdk/client-s3";
 import {randomUUID} from "node:crypto";
 import path from "path";
 
@@ -30,6 +30,19 @@ class S3Service {
                 })
             )
             return filePath
+        }catch(err) {
+            console.log(err)
+            throw err
+        }
+    }
+    public async deleteFile(filesPath: string): Promise<void> {
+        try {
+            await this.client.send(
+                new DeleteObjectCommand({
+                    Bucket: configs.AWS_S3_BUCKET_NAME,
+                    Key: filesPath,
+                })
+            )
         }catch(err) {
             console.log(err)
             throw err
