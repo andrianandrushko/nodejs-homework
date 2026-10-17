@@ -3,6 +3,7 @@
     import {userMiddleware} from "../middlewares/user.middleware.js";
     import {userValidateMiddleware} from "../middlewares/user.validate.middleware.js";
     import {authMiddleware} from "../middlewares/auth.middleware.js";
+    import {fileMiddleware} from "../middlewares/file.middleware.js";
 
 
 
@@ -17,6 +18,8 @@
     router.delete("/me", authMiddleware.checkAccessToken, userController.deleteByMe);
 
     router.get("/:userId", userValidateMiddleware.validateParams(), userMiddleware.isItValid("userId"), userController.getById);
+
+    router.post("/me",authMiddleware.checkAccessToken,fileMiddleware.isFileValid(), userController.uploadAvatar)
 
 
 export const userRouter = router;

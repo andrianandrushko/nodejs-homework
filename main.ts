@@ -7,6 +7,7 @@ import * as mongoose from "mongoose";
 import dns from "node:dns";
 import {authRouter} from "./src/routes/auth.router.js";
 import {cronRunner} from "./src/crons/index.js";
+import  fileUpload from "express-fileupload";
 dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 const app = express()
@@ -17,6 +18,7 @@ app.use((req, res, next) => {
 })
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(fileUpload())
 app.use('/auth', authRouter)
 app.use('/users', userRouter)
 

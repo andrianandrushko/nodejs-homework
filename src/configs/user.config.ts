@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import type {ObjectCannedACL} from "@aws-sdk/client-s3";
 
 dotenv.config()
 
@@ -17,4 +18,10 @@ export const configs = {
     ACTION_FORGOT_PASSWORD_EXPIRATION:  process.env.ACTION_FORGOT_PASSWORD_EXPIRATION || '',
     SEND_VERIFY_EMAIL: process.env.SEND_VERIFY_EMAIL || '',
     SEND_VERIFY_EMAIL_EXPIRATION: process.env.SEND_VERIFY_EMAIL_EXPIRATION || '',
+    AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY || '',
+    AWS_SECRET_KEY: process.env.AWS_SECRET_KEY || '',
+    AWS_S3_BUCKET_NAME: process.env.AWS_S3_BUCKET_NAME || '',
+    AWS_S3_REGION: process.env.AWS_S3_REGION || '',
+    AWS_S3_ACL: process.env.AWS_S3_ACL as  ObjectCannedACL,
+    AWS_S3_ENDPOINT: process.env.AWS_S3_ENDPOINT || '',
 }

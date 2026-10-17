@@ -2,6 +2,9 @@ import type {NextFunction, Request, Response} from "express";
 import {userService} from "../services/user.service.js";
 import type {IUser} from "../interfaces/user.interface.js";
 import type {ITokenPayload} from "../interfaces/token.interface.js";
+import type {UploadedFile} from "express-fileupload";
+import {ApiError} from "../errors/api.error.js";
+import {userPresenter} from "../presenters/user.presenter.js";
 
 class UserController {
     public async getList(req: Request, res: Response, next: NextFunction) {
@@ -24,7 +27,8 @@ class UserController {
     public async getById(req: Request, res: Response, next: NextFunction) {
         try {
             const userId = req.params.userId as string;
-            const result = await userService.getById(userId);
+            const user = await userService.getById(userId);
+            const result = userPresenter.toPublicResponseDto(user)
             res.json(result);
         } catch (err) {
             next(err);
@@ -33,7 +37,8 @@ class UserController {
     public async getMe(req: Request, res: Response, next: NextFunction){
         try {
             const jwtPayload =  res.locals.jwtPayload as ITokenPayload
-            const result = await userService.getMe(jwtPayload)
+            const user = await userService.getMe(jwtPayload)
+            const result = userPresenter.toPublicResponseDto(user)
             res.json(result);
         }catch (err) {
          next(err);
@@ -54,6 +59,20 @@ class UserController {
         const jwtPayload =  res.locals.jwtPayload as ITokenPayload
         const result = await userService.deleteByMe(jwtPayload)
         res.json(result);
+        }catch (err){
+            next(err)
+        }
+    }
+    public async uploadAvatar(req: Request, res: Response, next: NextFunction) {
+        try {
+            const jwtPayload = res.locals.jwtPayload as ITokenPayload;
+            const avatar = req.files?.avatar as UploadedFile
+            const user=  await userService.uploadAvatar(jwtPayload, avatar)
+            if (!user) {
+                throw new ApiError('user not found',404)
+            }
+            const result = userPresenter.toPublicResponseDto(user)
+            res.json(result);
         }catch (err){
             next(err)
         }
