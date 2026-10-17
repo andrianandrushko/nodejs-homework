@@ -35,12 +35,12 @@ class S3Service {
             throw err
         }
     }
-    public async deleteFile(filesPath: string): Promise<void> {
+    public async deleteFile(filePath: string): Promise<void> {
         try {
             await this.client.send(
                 new DeleteObjectCommand({
                     Bucket: configs.AWS_S3_BUCKET_NAME,
-                    Key: filesPath,
+                    Key: filePath,
                 })
             )
         }catch(err) {
