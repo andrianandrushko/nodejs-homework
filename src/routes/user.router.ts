@@ -19,7 +19,7 @@
 
     router.get("/:userId", userValidateMiddleware.validateParams(), userMiddleware.isItValid("userId"), userController.getById);
 
-    router.post("/me",authMiddleware.checkAccessToken,fileMiddleware.FileValidation(), userController.uploadAvatar)
+    router.post("/me",authMiddleware.checkAccessToken,fileMiddleware.isFileValid(), fileMiddleware.FileValidation(),userController.uploadAvatar)
 
     router.delete("/me", authMiddleware.checkAccessToken, userController.deleteFile);
 
