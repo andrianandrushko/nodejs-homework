@@ -68,7 +68,7 @@ class AuthController {
     }
     public async forgotPasswordSet(req: Request, res: Response, next: NextFunction) {
         try {
-            const jwtPayload = res.locals.jwtPayload.userId;
+            const jwtPayload = res.locals.jwtPayload as ITokenPayload;
             const dto = req.body as IResetPasswordSet;
             await authService.forgotPasswordSet(dto,jwtPayload);
             res.sendStatus(204);
@@ -101,17 +101,6 @@ class AuthController {
             const dto = req.body as IChangePassword;
             await authService.changePassword(jwtPayload,dto)
             res.sendStatus(204);
-        }catch (err){
-            next(err)
-        }
-    }
-    public async checkPasswordOldPassword(req: Request, res: Response, next: NextFunction) {
-        try {
-            const jwtPayload = res.locals.jwtPayload as ITokenPayload;
-            const { _userId } = req.body as IOldPassword
-            const { currentHash } = req.body as IOldPassword
-            const { newPassword } = req.body as IOldPassword
-            await authService.checkPasswordOldPassword(_userId,currentHash,newPassword, jwtPayload)
         }catch (err){
             next(err)
         }

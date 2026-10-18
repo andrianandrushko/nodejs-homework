@@ -117,25 +117,23 @@ class AuthService {
         if (!isPasswordCorrect) {
             throw new ApiError('password not correct', 401)
         }
-        await this.checkPasswordOldPassword(jwtPayload.userId,user.password, dto.password, jwtPayload)
+        if (await passwordService.comparePassword(dto.password, user.password)) {
+            throw new ApiError('password already used', 409)
+        }
+        await this.checkPasswordOldPassword(jwtPayload,dto)
         await oldPasswordRepository.create(jwtPayload.userId, user.password)
         const password = await passwordService.hashPassword(dto.password)
         await userRepository.putById(jwtPayload.userId, {password})
         await tokenRepository.deleteManyParams({_userId: jwtPayload.userId})
 
     }
-    public async checkPasswordOldPassword(_userId: string, currentHash: string, newPassword: string,jwtPayload: ITokenPayload):Promise<void> {
-        const user = await passwordService.comparePassword(newPassword,currentHash)
-        if (user) {
-            throw new ApiError('user not found', 401)
-        }
-        const oldPassword = await oldPasswordRepository.getAllByUserId(_userId)
+    public async checkPasswordOldPassword(jwtPayload: ITokenPayload,dto: IChangePassword):Promise<void> {
+        const oldPassword = await oldPasswordRepository.getAllByUserId(jwtPayload.userId)
         for (const old of oldPassword) {
-            if (await passwordService.comparePassword(newPassword,old.password)){
+            if (await passwordService.comparePassword(dto.password, old.password)){
                 throw new ApiError('password was used in the last 180 days', 409)
             }
         }
-        await tokenRepository.deleteManyParams({_userId: jwtPayload.userId})
     }
 }
 
