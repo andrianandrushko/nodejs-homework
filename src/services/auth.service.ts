@@ -125,7 +125,6 @@ class AuthService {
         const password = await passwordService.hashPassword(dto.password)
         await userRepository.putById(jwtPayload.userId, {password})
         await tokenRepository.deleteManyParams({_userId: jwtPayload.userId})
-
     }
     public async checkPasswordOldPassword(jwtPayload: ITokenPayload,dto: IChangePassword):Promise<void> {
         const oldPassword = await oldPasswordRepository.getAllByUserId(jwtPayload.userId)
