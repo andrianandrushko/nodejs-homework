@@ -5,12 +5,13 @@ import {
     UserParamsValidation,
     UserQueryValidation,
 } from "../validations/user.validation.js";
+import type { ObjectSchema } from "joi";
 
 class UserValidateMiddleware {
     public validateBody() {
         return (req: Request, res: Response, next: NextFunction) => {
             try {
-                const { error } = UserBodyValidation.validate(req.body);
+                const {error} = UserBodyValidation.validate(req.body);
                 if (error) {
                     throw new ApiError(error.message, 400);
                 }
@@ -19,19 +20,6 @@ class UserValidateMiddleware {
                 next(err);
             }
         };
-    }
-    public validateQuery() {
-        return (req: Request, res: Response, next: NextFunction) => {
-            try {
-                const { error } = UserQueryValidation.validate(req.query);
-                if (error) {
-                    throw new ApiError(error.message, 400);
-                }
-                next()
-            }catch (err) {
-                next(err)
-            }
-        }
     }
     public validateParams() {
         return (req: Request, res: Response, next: NextFunction) => {

@@ -1,6 +1,7 @@
 import { type NextFunction,type Request, type Response } from "express";
 import {isObjectIdOrHexString} from "mongoose";
 import {ApiError} from "../errors/api.error.js";
+import type {ObjectSchema} from "joi";
 
 
 class UserMiddleware{
@@ -15,7 +16,17 @@ public isItValid(key: string) {
         next(err)
     }
     }
-}
+    }
+    public isQueryValid(validator:ObjectSchema) {
+    return async (req: Request,res: Response, next: NextFunction)=>{
+        try {
+            req.query = await validator.validateAsync(req.query);
+            next()
+        }catch (err) {
+            next(err)
+        }
+    }
+    }
 }
 
 

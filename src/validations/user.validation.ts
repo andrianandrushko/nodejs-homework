@@ -1,4 +1,6 @@
 import Joi from "joi";
+import {UserListOrderEnum} from "../enums/user-list.order.enum.js";
+import {UserListOrderByEnum} from "../enums/user-list.order-by.enum.js";
 
 
  export const UserBodyValidation = Joi.object(
@@ -20,11 +22,12 @@ export const UserParamsValidation = Joi.object(
     }
 )
 
-export const UserQueryValidation = Joi.object(
-    {
-        name: Joi.string().min(3).trim().max(10),
-        age: Joi.number().min(1).integer().max(100),
-    }
-)
-
-
+export class UserQueryValidation {
+    public static listQuery = Joi.object({
+        page: Joi.number().min(1),
+        limit: Joi.number().min(1).max(100),
+        search: Joi.string().trim().lowercase(),
+        order: Joi.string().valid(...Object.values(UserListOrderEnum)),
+        orderBy: Joi.string().valid(...Object.values(UserListOrderByEnum)),
+    });
+}

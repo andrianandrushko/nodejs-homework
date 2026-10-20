@@ -9,6 +9,7 @@ import {userPresenter} from "../presenters/user.presenter.js";
 class UserController {
     public async getList(req: Request, res: Response, next: NextFunction) {
         try {
+            const query = req.query;
             const result = await userService.getList();
             res.json(result);
         }catch (err){

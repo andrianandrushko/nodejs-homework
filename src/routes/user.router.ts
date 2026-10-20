@@ -4,12 +4,13 @@
     import {userValidateMiddleware} from "../middlewares/user.validate.middleware.js";
     import {authMiddleware} from "../middlewares/auth.middleware.js";
     import {fileMiddleware} from "../middlewares/file.middleware.js";
+    import {UserQueryValidation} from "../validations/user.validation.js";
 
 
 
     const router = Router();
 
-    router.get("/", userValidateMiddleware.validateQuery(), userController.getList);
+    router.get("/", userMiddleware.isQueryValid(UserQueryValidation.listQuery), userController.getList);
 
     router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
 
