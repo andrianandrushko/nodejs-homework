@@ -1,0 +1,343 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Node.js API",
+    "version": "1.0.0",
+    "description": "API documentation"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3002"
+    }
+  ],
+  "paths": {
+    "/sign-up": {
+      "post": {
+        "tags": [
+          "Sign-up"
+        ],
+        "summary": "Create a new account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Oleg"
+                  },
+                  "age": {
+                    "type": "integer",
+                    "example": 25
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "andrian@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password123"
+                  }
+                },
+                "required": [
+                  "name",
+                  "age",
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Account created successfully"
+          },
+          "400": {
+            "description": "Invalid request data"
+          }
+        }
+      }
+    },
+    "/sign-in": {
+      "post": {
+        "tags": [
+          "Sign-in"
+        ],
+        "summary": "Log in",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "andrian@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password123"
+                  }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged in"
+          },
+          "401": {
+            "description": "Wrong email or password"
+          }
+        }
+      }
+    },
+    "/refresh": {
+      "post": {
+        "tags": [
+          "Refresh"
+        ],
+        "summary": "Refresh token",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9sZWciLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yBdD8vuK0Iak"
+                  },
+                  "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjgzOTAyMn0.4Kx9mZpQ2vL7nR8tYwB3cJdE5fGhA1sUoIqNyTzXeMk"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Tokens refreshed"
+          },
+          "401": {
+            "description": "Invalid or expired refresh token"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "tags": ["Logout"],
+        "summary": "Logout from account",
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "204": { "description": "Logout successful" },
+          "401": { "description": "Invalid or expired token" }
+        }
+      }
+    },
+    "/logout-all": {
+      "post": {
+        "tags": ["Logout-all"],
+        "summary": "Logout from all accounts",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logout-all successful"
+          },
+          "401": {
+            "description": "Invalid or expired token"
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "post": {
+        "tags": ["Forgot-password"],
+        "summary": "Forgot password",
+        "requestBody": {
+          "required":  true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Forgot-password successful"
+          },
+          "401": {
+            "description": "Invalid or expired password"
+          }
+        }
+      }
+    },
+    "//forgot-password": {
+      "put": {
+        "tags": ["Forgot-password"],
+        "summary": "Forgot password",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9sZWciLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yBdD8vuK0Iak"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "password1234567898"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description":  "Forgot-password successful"
+          },
+          "401": {
+            "description": "Invalid or expired password"
+          }
+        }
+      }
+    },
+    "/verify-email": {
+      "post": {
+        "tags": ["Verify-email"],
+        "summary": "Verify the account",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Email was verified"
+          },
+          "401": {
+            "description": "Invalid or expired email"
+          }
+        }
+      }
+    },
+    "/verify-token": {
+      "post": {
+        "tags": ["Verify-token"],
+        "summary": "Verify the token",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9sZWciLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yBdD8vuK0Iak"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token was verified"
+          },
+          "401": {
+            "description": "Invalid or expired token"
+          }
+        }
+      }
+    },
+    "/change-password": {
+      "post": {
+        "tags": ["Change-password"],
+        "summary": "Change-password",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9sZWciLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yBdD8vuK0Iak"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "123456789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "password was changed"
+          },
+          "401": {
+            "description": "Invalid or expired password"
+          }
+        }
+      }
+    }
+  }
+}

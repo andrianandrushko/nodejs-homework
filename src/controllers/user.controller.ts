@@ -1,6 +1,6 @@
 import type {NextFunction, Request, Response} from "express";
 import {userService} from "../services/user.service.js";
-import type {IUser} from "../interfaces/user.interface.js";
+import type {IUser, IUserListQuery} from "../interfaces/user.interface.js";
 import type {ITokenPayload} from "../interfaces/token.interface.js";
 import type {UploadedFile} from "express-fileupload";
 import {ApiError} from "../errors/api.error.js";
@@ -9,8 +9,8 @@ import {userPresenter} from "../presenters/user.presenter.js";
 class UserController {
     public async getList(req: Request, res: Response, next: NextFunction) {
         try {
-            const query = req.query;
-            const result = await userService.getList();
+            const query = req.query as unknown as IUserListQuery;
+            const result = await userService.getList(query);
             res.json(result);
         }catch (err){
             next(err)

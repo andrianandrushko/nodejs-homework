@@ -1,15 +1,17 @@
 import {userRepository} from "../repositories/user.repository.js";
-import type {IUser} from "../interfaces/user.interface.js";
+import type {IUser, IUserListQuery, IUserListResponse} from "../interfaces/user.interface.js";
 import {ApiError} from "../errors/api.error.js";
 import {passwordService} from "./password.service.js";
 import type {ITokenPayload} from "../interfaces/token.interface.js";
 import {s3Service} from "./s3.service.js";
 import {FileItemTypeEnum} from "../enums/file.item-type.enum.js";
 import type {UploadedFile} from "express-fileupload";
+import {userPresenter} from "../presenters/user.presenter.js";
 
 class UserService{
-    public async getList():Promise<IUser[]> {
-        return await userRepository.getList();
+    public async getList(query: IUserListQuery):Promise<IUserListResponse> {
+        const [entity, total] = await userRepository.getList(query);
+        return userPresenter.toListResponseDto(entity, total,query);
     }
     public async create(dto: Partial<IUser>): Promise<IUser> {
         if (!dto.name || dto.name.length < 3) {
@@ -65,7 +67,9 @@ class UserService{
         if (!user){
             throw new ApiError("User not found", 400);
         }
-        await s3Service.deleteFile(user.avatar)
+        if (user.avatar) {
+            await s3Service.deleteFile(user.avatar);
+        }
         const update = await userRepository.putById(jwtPayload.userId, {avatar: ''})
         return update
     }

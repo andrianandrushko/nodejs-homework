@@ -1,9 +1,9 @@
-import type {IUser} from "../interfaces/user.interface.js";
+import type {IUser, IUserListQuery, IUserListResponse, IUserResponse} from "../interfaces/user.interface.js";
 import {configs} from "../configs/user.config.js";
 
 
 class UserPresenter{
-    toPublicResponseDto(entity: IUser) {
+   public toPublicResponseDto(entity: IUser): IUserResponse {
         return{
             _id: entity._id,
             name: entity.name,
@@ -14,6 +14,13 @@ class UserPresenter{
             isVerified: entity.isVerified,
             isDeleted: entity.isDeleted,
         }
+    }
+    public toListResponseDto(entity: IUser[], total: number,query:IUserListQuery): IUserListResponse  {
+       return{
+           data: entity.map(this.toPublicResponseDto),
+           total,
+           ...query
+       }
     }
 }
 
