@@ -17,6 +17,7 @@
           "Sign-up"
         ],
         "summary": "Create a new account",
+        "description": "create account by name,age,email, password",
         "requestBody": {
           "required": true,
           "content": {
@@ -26,15 +27,19 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "Oleg"
+                    "example": "Oleg",
+                    "minLength": 3,
+                    "maxLength": 10
                   },
                   "age": {
                     "type": "integer",
-                    "example": 25
+                    "example": 25,
+                    "minimum": 1,
+                    "maximum": 100
                   },
                   "email": {
                     "type": "string",
-                    "example": "andrian@example.com"
+                    "example": "oleg@example.com"
                   },
                   "password": {
                     "type": "string",
@@ -67,6 +72,7 @@
           "Sign-in"
         ],
         "summary": "Log in",
+        "description": "log in by email,password",
         "requestBody": {
           "required": true,
           "content": {
@@ -107,6 +113,7 @@
           "Refresh"
         ],
         "summary": "Refresh token",
+        "description": "update the token using refresh",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -123,7 +130,11 @@
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjgzOTAyMn0.4Kx9mZpQ2vL7nR8tYwB3cJdE5fGhA1sUoIqNyTzXeMk"
                   }
-                }
+                },
+                "required": [
+                  "accessToken",
+                  "refreshToken"
+                ]
               }
             }
           }
@@ -142,7 +153,27 @@
       "post": {
         "tags": ["Logout"],
         "summary": "Logout from account",
+        "description": "Logout from account",
         "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjgzOTAyMn0.4Kx9mZpQ2vL7nR8tYwB3cJdE5fGhA1sUoIqNyTzXeMp"
+                  }
+                },
+                "required": [
+                  "accessToken"
+                ]
+              }
+            }
+          }
+        },
         "responses": {
           "204": { "description": "Logout successful" },
           "401": { "description": "Invalid or expired token" }
@@ -153,13 +184,23 @@
       "post": {
         "tags": ["Logout-all"],
         "summary": "Logout from all accounts",
+        "description": "Logout from all accounts",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwidHlwZSI6InJlZnJlc2giLCJpYXQiOjE1MTYyMzkwMjIsImV4cCI6MTUxNjgzOTAyMn0.4Kx9mZpQ2vL7nR8tYwB3cJdE5fGhA1sUoIqNyTzXeMn"
+                  }
+                },
+                "required": [
+                  "accessToken"
+                ]
               }
             }
           }
@@ -178,6 +219,7 @@
       "post": {
         "tags": ["Forgot-password"],
         "summary": "Forgot password",
+        "description": "implement forgot password",
         "requestBody": {
           "required":  true,
           "content": {
@@ -193,7 +235,11 @@
                     "type": "string",
                     "example": "password123"
                   }
-                }
+                },
+                "required": [
+                  "email",
+                  "password"
+                ]
               }
             }
           }
@@ -212,6 +258,7 @@
       "put": {
         "tags": ["Forgot-password"],
         "summary": "Forgot password",
+        "description": "implement forgot password for put method",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -228,7 +275,11 @@
                     "type": "string",
                     "example": "password1234567898"
                   }
-                }
+                },
+                "required": [
+                  "accessToken",
+                  "password"
+                ]
               }
             }
           }
@@ -247,6 +298,7 @@
       "post": {
         "tags": ["Verify-email"],
         "summary": "Verify the account",
+        "description": "implement verify the account",
         "requestBody": {
           "required": true,
           "content": {
@@ -258,7 +310,10 @@
                     "type": "string",
                     "example": "example@gmail.com"
                   }
-                }
+                },
+                "required": [
+                  "email"
+                ]
               }
             }
           }
@@ -277,6 +332,7 @@
       "post": {
         "tags": ["Verify-token"],
         "summary": "Verify the token",
+        "description": "implement verify the token",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -289,7 +345,10 @@
                     "type": "string",
                     "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ik9sZWciLCJpYXQiOjE1MTYyMzkwMjJ9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yBdD8vuK0Iak"
                   }
-                }
+                },
+                "required": [
+                  "accessToken"
+                ]
               }
             }
           }
@@ -308,6 +367,7 @@
       "post": {
         "tags": ["Change-password"],
         "summary": "Change-password",
+        "description": "implement change-password",
         "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
@@ -324,7 +384,11 @@
                     "type": "string",
                     "example": "123456789"
                   }
-                }
+                },
+                "required": [
+                  "accessToken",
+                  "password"
+                ]
               }
             }
           }
