@@ -22,7 +22,7 @@
 
     router.post("/me",authMiddleware.checkAccessToken,fileMiddleware.isFileValid(), fileMiddleware.FileValidation(),userController.uploadAvatar)
 
-    router.delete("/me", authMiddleware.checkAccessToken, userController.deleteFile);
+    router.delete("/me/avatar", authMiddleware.checkAccessToken, userController.deleteFile);
 
 
 export const userRouter = router;

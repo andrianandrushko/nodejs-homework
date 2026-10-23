@@ -24,8 +24,8 @@ export const UserParamsValidation = Joi.object(
 
 export class UserQueryValidation {
     public static listQuery = Joi.object({
-        page: Joi.number().min(1),
-        limit: Joi.number().min(1).max(100),
+        page: Joi.number().min(1).default(1),
+        limit: Joi.number().min(1).max(100).default(10),
         search: Joi.string().trim().lowercase(),
         order: Joi.string().valid(...Object.values(UserListOrderEnum)),
         orderBy: Joi.string().valid(...Object.values(UserListOrderByEnum)),

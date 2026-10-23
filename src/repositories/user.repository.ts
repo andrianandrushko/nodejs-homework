@@ -10,12 +10,17 @@
                 filterObj.name = {$regex: query.search, $options: "i"};
             }
             const skip = query.limit * (query.page -1)
+            let sortOrderBy: 1 | -1
+            if (query.order === 'desc') {
+                sortOrderBy = -1
+            }else {
+                sortOrderBy = 1
+            }
             return await Promise.all([
-                User.find(filterObj).limit(query.limit).skip(skip),
+                User.find(filterObj).limit(query.limit).skip(skip).sort({[query.orderBy]:sortOrderBy}),
                 User.countDocuments(filterObj)
             ])
         }
-
         public async create(dto: Partial<IUser>): Promise<IUser> {
            return await User.create(dto)
         }
