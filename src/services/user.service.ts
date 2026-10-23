@@ -56,6 +56,9 @@ class UserService{
         if (!user){
             throw new ApiError("User not found", 400);
         }
+        if (user.avatar) {
+            await s3Service.deleteFile(user.avatar);
+        }
         const avatar =  await s3Service.uploadFile(file,FileItemTypeEnum.USER,jwtPayload.userId)
         const update = await userRepository.putById(jwtPayload.userId, {avatar})
         return update
@@ -64,6 +67,9 @@ class UserService{
         const user = await userRepository.getById(jwtPayload.userId);
         if (!user){
             throw new ApiError("User not found", 400);
+        }
+        if (!user.avatar) {
+            throw new ApiError("Avatar not found", 400);
         }
         await s3Service.deleteFile(user.avatar)
         const update = await userRepository.putById(jwtPayload.userId, {avatar: ''})

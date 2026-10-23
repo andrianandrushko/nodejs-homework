@@ -84,6 +84,7 @@ class UserController {
             if (!user) {
                 throw new ApiError('user not found',404)
             }
+            res.sendStatus(204)
         }catch (err){
             next(err)
         }
