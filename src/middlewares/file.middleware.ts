@@ -17,7 +17,11 @@ class FileMiddleware{
     public FileValidation() {
         return (req: Request, res: Response, next: NextFunction) => {
             try {
-                const { error } = FileValidation.validate(req.files?.avatar)
+                const avatar = req.files?.avatar
+                if (!avatar) {
+                    throw new ApiError('avatar not found',400)
+                }
+                const { error } = FileValidation.validate(avatar)
                 if (error) {
                     throw new ApiError(error.message, 400)
                 }
